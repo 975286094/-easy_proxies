@@ -14,6 +14,7 @@ raw 前缀：`https://raw.githubusercontent.com/975286094/-easy_proxies/main/`
 | `KuWoTask_SelfHosted.sgmodule` | 同上 | 本仓库 `scripts/kuwotask.js` | **自托管**，冻结版本 |
 | `bdyy.sgmodule` | 波点音乐 会员调试 / 去广告 / 下载歌曲 | `WeiGiegie/666`（原作者） | 跟随原作者更新 |
 | `bdyy_SelfHosted.sgmodule` | 同上 | 本仓库 `scripts/bdyy.js` | **自托管**，冻结版本 |
+| `BlockAdvertisers.sgmodule` | 广告平台拦截器（全平台去广告基础规则，198 条） | **无脚本**，纯规则 | 静态，天然不依赖上游 |
 | `KuWoTask_Test.sgmodule` | 同 KuWoTask，cron 改为每分钟 | — | ⚠️ 临时排障用，验证后请删除 |
 
 ### 导入链接
@@ -22,6 +23,7 @@ raw 前缀：`https://raw.githubusercontent.com/975286094/-easy_proxies/main/`
 - [KuWoTask（自主版）](surge:///install-module?url=https://raw.githubusercontent.com/975286094/-easy_proxies/main/modules/KuWoTask_SelfHosted.sgmodule&name=KuWoTask_SelfHosted)
 - [bdyy 波点音乐（原版）](surge:///install-module?url=https://raw.githubusercontent.com/975286094/-easy_proxies/main/modules/bdyy.sgmodule&name=bdyy)
 - [bdyy 波点音乐（自主版）](surge:///install-module?url=https://raw.githubusercontent.com/975286094/-easy_proxies/main/modules/bdyy_SelfHosted.sgmodule&name=bdyy_SelfHosted)
+- [BlockAdvertisers 广告平台拦截器](surge:///install-module?url=https://raw.githubusercontent.com/975286094/-easy_proxies/main/modules/BlockAdvertisers.sgmodule&name=BlockAdvertisers)
 
 > GitHub 页面内的 `surge://` 链接需在 Surge 已安装的设备上点击；也可复制 raw URL 到 Surge → 模块 → `+` 手动导入。
 
@@ -39,6 +41,8 @@ raw 前缀：`https://raw.githubusercontent.com/975286094/-easy_proxies/main/`
 
 **建议**：日常用原版享受更新；发现原作者删库或长期停更时，切换到自主版。
 
+> `BlockAdvertisers.sgmodule` 属于**无脚本模块**（只有规则与 URL 重写），不存在"上游删库"问题，无需自主版。其图标已一并镜像到本仓库 `icons/`。
+
 ---
 
 ## 目录结构
@@ -51,12 +55,14 @@ raw 前缀：`https://raw.githubusercontent.com/975286094/-easy_proxies/main/`
 │   ├── KuWoTask_SelfHosted.sgmodule
 │   ├── KuWoTask_Test.sgmodule
 │   ├── bdyy.sgmodule
-│   └── bdyy_SelfHosted.sgmodule
+│   ├── bdyy_SelfHosted.sgmodule
+│   └── BlockAdvertisers.sgmodule
 ├── scripts/                   镜像脚本（自主版依赖）
 │   ├── kuwotask.js
 │   └── bdyy.js
 └── icons/                     镜像图标
-    └── kuwosvip.png
+    ├── kuwosvip.png
+    └── TencentAd.png
 ```
 
 ---
