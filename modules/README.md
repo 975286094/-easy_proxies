@@ -102,6 +102,7 @@ git add scripts/ && git commit -m "chore: sync upstream scripts" && git push
 
 **已知限制**
 
+- **元信息必须位于文件最顶部**。Surge 只从文件开头的 `#!` 块读取 `name` / `desc`，一旦 `#!name` 之前出现任何普通注释行（如 `# 来源: ...`），模块会显示为**无名称、无描述**。来源注释因此一律放到文件末尾。
 - Surge 主机名列表不支持 `IP:端口` 与 IP 段通配（如 `39.156.12*.*:443`），此类条目在转换时被剔除。
 - 原作者正则若要求 `/api/` 前缀（如 `h5app.kuwo.cn/api/service/...`），转换时原样保留，不做"修正"。
 
