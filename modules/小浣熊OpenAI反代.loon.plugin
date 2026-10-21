@@ -1,0 +1,15 @@
+#!name=小浣熊 OpenAI 反代 (Loon)
+#!desc=把商汤小浣熊包装成 OpenAI 兼容 API，账号密码自动登录；主链路 llm/v2 网关 + office/v3 自动回退，模型目录动态获取；附每日自动签到。添加插件时填 nation(默认86)/phone/password，或只填 token；不用的项留空。密码含 & 或 = 等特殊字符时请改用 token 方式。签到默认每天 00:12。
+#!author=LinkPass888
+#!homepage=https://github.com/LinkPass888/Surge
+#!input = nation
+#!input = phone
+#!input = password
+#!input = token
+
+[script]
+http-request ^https:\/\/xiaohuanxiong\.com\/v1\/(chat\/completions|models|checkin|probe) script-path=https://raw.githubusercontent.com/975286094/-easy_proxies/main/scripts/raccoon-openai.loon.js,requires-body=true,tag=小浣熊反代,timeout=120,enable=true
+cron "12 0 * * *" script-path=https://raw.githubusercontent.com/975286094/-easy_proxies/main/scripts/raccoon-openai.loon.js,tag=小浣熊每日签到,timeout=300,enable=true
+
+[mitm]
+hostname = xiaohuanxiong.com

@@ -16,6 +16,8 @@ raw 前缀：`https://raw.githubusercontent.com/975286094/-easy_proxies/main/`
 | `bdyy_SelfHosted.sgmodule` | 同上 | 本仓库 `scripts/bdyy.js` | **自托管**，冻结版本 |
 | `BlockAdvertisers.sgmodule` | 广告平台拦截器（全平台去广告基础规则，198 条） | **无脚本**，纯规则 | 静态，天然不依赖上游 |
 | `KuWoTask_Test.sgmodule` | 同 KuWoTask，cron 改为每分钟 | — | ⚠️ 临时排障用，验证后请删除 |
+| `小浣熊OpenAI反代.sgmodule` | 商汤小浣熊 → OpenAI 兼容 API（真流式）+ 每日签到 | `LinkPass888/Surge`（原作者） | 跟随原作者更新 |
+| `小浣熊OpenAI反代.loon.plugin` | 同上，**Loon 版**（脚本已适配 Loon） | 本仓库 `scripts/raccoon-openai.loon.js` | **自托管适配版** |
 
 ### 导入链接
 
@@ -24,6 +26,8 @@ raw 前缀：`https://raw.githubusercontent.com/975286094/-easy_proxies/main/`
 - [bdyy 波点音乐（原版）](surge:///install-module?url=https://raw.githubusercontent.com/975286094/-easy_proxies/main/modules/bdyy.sgmodule&name=bdyy)
 - [bdyy 波点音乐（自主版）](surge:///install-module?url=https://raw.githubusercontent.com/975286094/-easy_proxies/main/modules/bdyy_SelfHosted.sgmodule&name=bdyy_SelfHosted)
 - [BlockAdvertisers 广告平台拦截器](surge:///install-module?url=https://raw.githubusercontent.com/975286094/-easy_proxies/main/modules/BlockAdvertisers.sgmodule&name=BlockAdvertisers)
+- [小浣熊 OpenAI 反代（原版）](surge:///install-module?url=https://raw.githubusercontent.com/975286094/-easy_proxies/main/modules/%E5%B0%8F%E6%B5%A3%E7%86%8AOpenAI%E5%8F%8D%E4%BB%A3.sgmodule&name=%E5%B0%8F%E6%B5%A3%E7%86%8AOpenAI%E5%8F%8D%E4%BB%A3)
+- [小浣熊 OpenAI 反代（Loon 版）](loon://import?plugin=https%3A%2F%2Fraw.githubusercontent.com%2F975286094%2F-easy_proxies%2Fmain%2Fmodules%2F%25E5%25B0%258F%25E6%25B5%25A3%25E7%2586%258AOpenAI%25E5%258F%258D%25E4%25BB%25A3.loon.plugin)
 
 > GitHub 页面内的 `surge://` 链接需在 Surge 已安装的设备上点击；也可复制 raw URL 到 Surge → 模块 → `+` 手动导入。
 
@@ -49,17 +53,21 @@ raw 前缀：`https://raw.githubusercontent.com/975286094/-easy_proxies/main/`
 
 ```
 .
-├── modules/                   Surge 模块
+├── modules/                   Surge 模块（含 Loon 插件）
 │   ├── README.md              本文件
 │   ├── KuWoTask.sgmodule
 │   ├── KuWoTask_SelfHosted.sgmodule
 │   ├── KuWoTask_Test.sgmodule
 │   ├── bdyy.sgmodule
 │   ├── bdyy_SelfHosted.sgmodule
-│   └── BlockAdvertisers.sgmodule
+│   ├── BlockAdvertisers.sgmodule
+│   ├── 小浣熊OpenAI反代.sgmodule
+│   └── 小浣熊OpenAI反代.loon.plugin
 ├── scripts/                   镜像脚本（自主版依赖）
 │   ├── kuwotask.js
-│   └── bdyy.js
+│   ├── bdyy.js
+│   ├── raccoon-openai.js
+│   └── raccoon-openai.loon.js
 └── icons/                     镜像图标
     ├── kuwosvip.png
     └── TencentAd.png
@@ -108,6 +116,20 @@ git add scripts/ && git commit -m "chore: sync upstream scripts" && git push
 
 ---
 
-## 免责声明
+## 小浣熊 Loon 适配说明（Surge → Loon）
+
+`小浣熊OpenAI反代.loon.plugin` + `scripts/raccoon-openai.loon.js` 是 Surge 原版的 Loon 适配，差异点：
+
+| 项 | Surge | Loon 处理 |
+| --- | --- | --- |
+| `$httpClient` timeout 单位 | 秒 | **毫秒**（`20` → `20000`，不改会 20ms 即超时） |
+| 插件参数 | `#!arguments` + `{{{key}}}` 插值 | `#!input` 配置项，脚本内 `$persistentStore.read(键名)` 读取 |
+| `engine=webview` | 有 | 无此参数，删除 |
+| `atob`（JWT 过期预检） | 常驻 | 不保证有，换纯 JS base64 解码兜底 |
+| MITM | `hostname = %APPEND% x` | `hostname = x`，无 `%APPEND%` |
+
+配置填写：添加插件时填 `nation`（默认 86）/`phone`/`password`，或只填 `token`；不用的项留空。密码含 `&` `=` 时必须用 token 方式。
+
+---
 
 所有脚本版权归原作者所有，此处仅作格式转换与镜像备份。请于下载后 24 小时内删除，勿用于商业用途。
