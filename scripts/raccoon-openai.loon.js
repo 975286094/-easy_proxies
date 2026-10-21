@@ -236,19 +236,24 @@ function login(cb) {
     cb(new Error("模块未配置 phone/password（或直接填 token）"), null);
     return;
   }
+  // 清洗：去空白/连字符；去掉 +86 / 86 前缀（中国大陆 11 位手机号）
+  const phone = String(A.phone).replace(/[\s-]/g, "").replace(/^\+?86(?=\d{11}$)/, "");
+  const password = String(A.password).replace(/^\s+|\s+$/g, "");
+  const diag = "phone=" + (phone ? phone.slice(0, 3) + "****" + phone.slice(-2) + "(len" + phone.length + ")" : "(空)") +
+    " pwdLen=" + password.length + " nation=" + (A.nation || "86");
   const body = JSON.stringify({
     nation_code: A.nation || "86",
-    phone: encryptField(A.phone),
-    password: encryptField(A.password),
+    phone: encryptField(phone),
+    password: encryptField(password),
   });
   $httpClient.post(
     { url: AUTH + "/login_with_password", headers: { "Content-Type": "application/json" }, body: body, timeout: 30000 },
     function (err, resp, data) {
-      if (err) return cb(new Error("登录请求失败: " + err), null);
+      if (err) return cb(new Error("登录请求失败: " + err + " | " + diag), null);
       let j;
       try { j = JSON.parse(data); } catch (e) { return cb(new Error("登录响应解析失败"), null); }
       if (!j.data || !j.data.access_token) {
-        return cb(new Error("登录失败 " + (j.code || "") + ": " + (j.message || j.details || "未知错误")), null);
+        return cb(new Error("登录失败 " + (j.code || "") + ": " + (j.message || "未知错误") + (j.details ? " [" + j.details + "]" : "") + " | 输入诊断 " + diag), null);
       }
       saveTokens(j.data.access_token, j.data.refresh_token || "");
       cb(null, j.data.access_token);
