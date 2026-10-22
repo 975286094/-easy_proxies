@@ -14,17 +14,15 @@
  * by LinkPass888 · Loon 版
  */
 function loonInputArgs() {
-  const parts = [];
-  for (const k of ["nation", "phone", "password", "token"]) {
-    let v = null;
-    try { v = $persistentStore.read(k); } catch (e) {}
-    if (v && v !== "none" && v !== "REPLACE_ME") parts.push(k + "=" + v);
-  }
-  return parts.join("&");
+  // #!input 值可能含 & 或 =（如密码 Forever&21），不能拼串再 parseArg——直接读并逐键赋值
+  return null;
 }
-const A = parseArg(
-  (typeof $argument === "string" && $argument ? $argument : "") + "|" + loonInputArgs()
-);
+const A = parseArg(typeof $argument === "string" && $argument ? $argument : "");
+for (const k of ["nation", "phone", "password", "token"]) {
+  let v = null;
+  try { v = $persistentStore.read(k); } catch (e) {}
+  if (v && v !== "none" && v !== "REPLACE_ME") A[k] = v;
+}
 const AUTH = "https://xiaohuanxiong.com/api/web/auth/v1";
 const LLM = "https://xiaohuanxiong.com/api/web/llm/v2";
 const ENC_KEY = "senseraccoon2023";
