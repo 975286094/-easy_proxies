@@ -1,0 +1,12 @@
+#!name=OfficeAce 反代 (Loon)
+#!desc=把 api.openai.com 的 OpenAI 请求反代到自建 officeace2api 网关。添加时填 target（默认 http://192.168.50.229:7864）和 key（officeace2api config.json 的 apiKeys 值）。
+#!author=xiaoya
+#!homepage=https://github.com/975286094/-easy_proxies
+#!input = target
+#!input = key
+
+[script]
+http-request ^https:\/\/api\.openai\.com\/v1\/ script-path=https://raw.githubusercontent.com/975286094/-easy_proxies/main/scripts/officeace-openai.loon.js,requires-body=true,tag=OfficeAce反代,timeout=180,enable=true
+
+[mitm]
+hostname = api.openai.com
