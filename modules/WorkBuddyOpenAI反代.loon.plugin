@@ -1,0 +1,12 @@
+#!name=WorkBuddy OpenAI 反代 (Loon)
+#!desc=把 api.openai.com 的 OpenAI 兼容请求反代到自建 WorkBuddy2API 网关。添加时填 target（默认局域网 http://192.168.50.229:7863，可改 Tailscale http://100.109.132.123:7863）与 key（网关 api_key）。仅改写请求，SSE 流式原样透传。
+#!author=小雅
+#!homepage=https://github.com/975286094/-easy_proxies
+#!input = target
+#!input = key
+
+[script]
+http-request ^https:\/\/api\.openai\.com\/v1\/ script-path=https://raw.githubusercontent.com/975286094/-easy_proxies/main/scripts/workbuddy-openai.loon.js,requires-body=true,tag=WorkBuddy反代,timeout=120,enable=true
+
+[mitm]
+hostname = api.openai.com
